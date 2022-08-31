@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, useEffect, useState } from 'react'
+import { InputHTMLAttributes, useEffect, useState } from 'react'
 
 import { maskCpfCnpj, validaCPF, validaCNPJ } from 'src/util/util'
 
