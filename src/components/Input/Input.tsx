@@ -1,6 +1,6 @@
 import React, { InputHTMLAttributes, useEffect, useState } from 'react'
 
-import { maskCpfCnpj, validaCPF } from 'src/util/util'
+import { maskCpfCnpj, validaCPF, validaCNPJ } from 'src/util/util'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -12,13 +12,13 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input = ({ value, setValueMask }: InputProps) => {
   const [error, setError] = useState<boolean>(true)
 
-  function maskInputValue(e: React.ChangeEvent<HTMLInputElement>) {
-    setValueMask(maskCpfCnpj(e.target.value))
-  }
+  const VALUE_CPF_LENGTH: number = 14
 
   useEffect(() => {
-    if (value.length > 13) {
+    if (value.length <= VALUE_CPF_LENGTH) {
       setError(validaCPF(value))
+    } else if (value.length > VALUE_CPF_LENGTH) {
+      setError(validaCNPJ(value))
     } else if (value.length === 0) {
       setError(true)
     }
@@ -33,7 +33,7 @@ const Input = ({ value, setValueMask }: InputProps) => {
         value={value}
         type="text"
         placeholder="example"
-        onChange={maskInputValue}
+        onChange={e => setValueMask(maskCpfCnpj(e.target.value))}
       />
       {!error && <span>Erro</span>}
     </div>
