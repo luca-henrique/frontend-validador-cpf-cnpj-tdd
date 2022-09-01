@@ -1,8 +1,10 @@
 import { InputHTMLAttributes, useEffect, useState } from 'react'
 
-import { maskCpfCnpj, validaCNPJ } from 'src/util/util'
+import { maskCpfCnpj } from 'src/util/util'
 
 import { validatorCPF } from 'src/util/validatorCPF'
+
+import { validatorCNPJ } from 'src/util/validatorCNPJ'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -20,7 +22,7 @@ const Input = ({ value, setValueMask }: InputProps) => {
     if (value.length <= VALUE_CPF_LENGTH) {
       setError(validatorCPF(value))
     } else if (value.length > VALUE_CPF_LENGTH) {
-      setError(validaCNPJ(value))
+      setError(validatorCNPJ(value))
     } else if (value.length === 0) {
       setError(true)
     }
