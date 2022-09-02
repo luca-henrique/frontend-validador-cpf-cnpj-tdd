@@ -1,14 +1,12 @@
 import { InputHTMLAttributes, useEffect, useState } from 'react'
 
-import { maskCpfCnpj } from 'src/util/util'
+import { maskCpfCnpj } from 'src/util/maskCNPJCPF'
 
 import { validatorCPF } from 'src/util/validatorCPF'
 
 import { validatorCNPJ } from 'src/util/validatorCNPJ'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string
-  placeholder?: string
   setValueMask: (value: string) => void
   value: string
 }
@@ -19,7 +17,7 @@ const Input = ({ value, setValueMask }: InputProps) => {
   const VALUE_CPF_LENGTH: number = 14
 
   useEffect(() => {
-    if (value.length <= VALUE_CPF_LENGTH) {
+    if (value.length === VALUE_CPF_LENGTH) {
       setError(validatorCPF(value))
     } else if (value.length > VALUE_CPF_LENGTH) {
       setError(validatorCNPJ(value))
@@ -27,6 +25,10 @@ const Input = ({ value, setValueMask }: InputProps) => {
       setError(true)
     }
   }, [value])
+
+  function maskInputValue(e: React.ChangeEvent<HTMLInputElement>) {
+    setValueMask(maskCpfCnpj(e.target.value))
+  }
 
   return (
     <div>
@@ -37,9 +39,10 @@ const Input = ({ value, setValueMask }: InputProps) => {
         value={value}
         type="text"
         placeholder="example"
-        onChange={e => setValueMask(maskCpfCnpj(e.target.value))}
+        onChange={maskInputValue}
       />
-      {!error && <span>Erro</span>}
+      <input data-testid="example" />
+      {!error && <span data-testid="erro-span">Erro</span>}
     </div>
   )
 }

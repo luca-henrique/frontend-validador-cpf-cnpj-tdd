@@ -5,6 +5,9 @@ import Input from './Input'
 const mockCnpj = '02128369000100'
 const mockCpf = '81768012083'
 
+const cpfInvalid = '111.111.111-11'
+const cnpjInvalid = '92.694.595/2111-40'
+
 describe('<Input />', () => {
   test('should have label', () => {
     const fn = jest.fn()
@@ -34,11 +37,27 @@ describe('<Input />', () => {
     expect(screen.getByTestId('cpf-input')).toHaveValue(mockCpf)
   })
 
-  test('should have render cnpj validate', () => {
+  test('should render cnpj validate', () => {
     const fn = jest.fn()
 
     render(<Input setValueMask={fn} value={mockCnpj} />)
 
     expect(screen.getByTestId('cpf-input')).toHaveValue(mockCnpj)
+  })
+
+  test('should render span error cpf', async () => {
+    const fn = jest.fn()
+
+    render(<Input setValueMask={fn} value={cpfInvalid} />)
+
+    expect(screen.getByTestId('erro-span')).toBeInTheDocument()
+  })
+
+  test('should render span error cnpj', async () => {
+    const fn = jest.fn()
+
+    render(<Input setValueMask={fn} value={cnpjInvalid} />)
+
+    expect(screen.getByTestId('erro-span')).toBeInTheDocument()
   })
 })
